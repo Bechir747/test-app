@@ -9,33 +9,40 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/username/test-app.git'
-            }
-        }
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
-        stage('Build') {
-            steps {
-                sh 'npm run build --prod'
+                git branch: 'main', url: 'https://github.com/username/test-app'
             }
         }
         stage('Docker Build') {
             steps {
                 script {
-                    dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_ID}")
+                    sh '/usr/local/bin/docker build -t test-app .'
                 }
             }
         }
+
+        stage('Docker run') {
+            steps {
+                script {
+                    sh '/usr/local/bin/docker run -p 8085:80 --name test-app-container test-app'
+                }
+            }
+        }
+
         stage('Docker Push') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKERHUB_CREDENTIALS_ID}") {
-                        dockerImage.push('latest')
-                        dockerImage.push("${env.BUILD_ID}")
+                    // Log in to Docker Hub
+                    withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS_ID}", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        sh '''
+                        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                        '''
                     }
+                    
+                    // Push Docker image
+                    sh '''
+                    docker push ${DOCKER_IMAGE_NAME}:latest
+                    docker push ${DOCKER_IMAGE_NAME}:${env.BUILD_ID}
+                    '''
                 }
             }
         }
