@@ -30,7 +30,7 @@ pipeline {
             steps {
                 
                 // Build Docker image
-                sh 'docker build -t my-image-name:latest .'
+                sh 'usr/share/docker build -t my-image-name:latest .'
                
             }
         }
