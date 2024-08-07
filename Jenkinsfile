@@ -28,9 +28,8 @@ pipeline {
             steps {
                 script {
                     // Run Docker container
-                    docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").inside('-p 4201:80') {
-                        sh 'echo "Running Angular application"'
-                        // You can add additional commands here to test the running application, e.g., curl commands.
+                    sh "docker run -d -p 4300:80 ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+                       
                     }
                 }
             }
