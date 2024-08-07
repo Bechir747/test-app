@@ -30,7 +30,6 @@ pipeline {
                     // Run Docker container
                     sh "docker run -d -p 4300:80 ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
                        
-                    }
                 }
             }
         }
