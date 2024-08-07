@@ -28,7 +28,7 @@ pipeline {
     stage('Run Docker Image') {
       steps {
         script {
-          docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").run(containerName: 'my-container', ports: '4300:80')
+          docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").run('-p 4201:80 --name my-container')
 
         }
       }
