@@ -11,6 +11,9 @@ pipeline {
     //     DOCKER_PASSWORD = credentials('Bechir747@')
     // }
 
+  tools{
+    Docker 'Docker'
+  }
     stages {
 
         stage('Run test-app') {
