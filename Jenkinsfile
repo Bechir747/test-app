@@ -12,7 +12,7 @@ pipeline {
     // }
 
   tools{
-    Docker 'Docker'
+    dockerTool 'Docker'
   }
     stages {
 
