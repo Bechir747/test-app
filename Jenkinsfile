@@ -6,10 +6,10 @@ pipeline {
     //     DOCKERHUB_CREDENTIALS_ID = 'dockerhub'
     // }
 
-    environment {
-        DOCKER_USERNAME = credentials('bechirbo')
-        DOCKER_PASSWORD = credentials('Bechir747@')
-    }
+    // environment {
+    //     DOCKER_USERNAME = credentials('bechirbo')
+    //     DOCKER_PASSWORD = credentials('Bechir747@')
+    // }
 
     stages {
 
@@ -25,13 +25,10 @@ pipeline {
 
          stage('Build') {
             steps {
-                script {
-                    // Login to Docker
-                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
-
-                    // Build Docker image
-                    sh 'docker build -t my-image-name:latest .'
-                }
+                
+                // Build Docker image
+                sh 'docker build -t my-image-name:latest .'
+               
             }
         }
 
