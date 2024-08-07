@@ -6,6 +6,11 @@ pipeline {
     //     DOCKERHUB_CREDENTIALS_ID = 'dockerhub'
     // }
 
+    environment {
+        DOCKER_USERNAME = credentials('bechirbo')
+        DOCKER_PASSWORD = credentials('Bechir747@')
+    }
+
     stages {
 
         stage('Run test-app') {
@@ -18,9 +23,15 @@ pipeline {
         }
 
 
-        stage('Build') {
+         stage('Build') {
             steps {
-                echo 'build successfully !!'
+                script {
+                    // Login to Docker
+                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+
+                    // Build Docker image
+                    sh 'docker build -t my-image-name:latest .'
+                }
             }
         }
 
@@ -30,7 +41,7 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy in DockerHub') {
             steps {
                 echo 'Deploy successfully !!'
             }
