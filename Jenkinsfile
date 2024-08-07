@@ -10,7 +10,7 @@ pipeline {
 
         stage('Run test-app') {
             steps {
-                echo 'executing npm ...!!!'
+                echo 'executing npm ...!'
                 nodejs('Node-18.18.1'){
                     sh 'npm install'
                 }
@@ -20,19 +20,19 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'build successfully !!!!'
+                echo 'build successfully !!'
             }
         }
 
        stage('Test') {
             steps {
-                echo 'Test successfully !!!!'
+                echo 'Test successfully !!'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploy successfully !!!!'
+                echo 'Deploy successfully !!'
             }
         }
     }
