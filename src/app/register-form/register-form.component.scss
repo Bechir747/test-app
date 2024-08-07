@@ -1,0 +1,23 @@
+.container {
+    position: relative;
+  }
+  
+  button {
+    margin: 10px;
+  }
+  
+  .form-container {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: white;
+    border-left: 1px solid #ccc;
+    overflow: hidden;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+    width: 300px;
+    transform: translateX(100%);
+    transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
+  }
+  
+  
