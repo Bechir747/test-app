@@ -24,14 +24,14 @@ pipeline {
             }
         }
 
-        stage('Run Docker Container') {
-            steps {
-                script {
-                    // Run Docker container
-                    sh "docker run -d -p 4300:80 ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+        // stage('Run Docker Container') {
+        //     steps {
+        //         script {
+        //             // Run Docker container
+        //             sh "docker run -d -p 4300:80 ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
                        
-                }
-            }
-        }
+        //         }
+        //     }
+        // }
     }
 }
