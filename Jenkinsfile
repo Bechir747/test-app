@@ -1,10 +1,10 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_IMAGE_NAME = 'bechirbo/test-app'
-        DOCKERHUB_CREDENTIALS_ID = 'dockerhub'
-    }
+    // environment {
+    //     DOCKER_IMAGE_NAME = 'bechirbo/test-app'
+    //     DOCKERHUB_CREDENTIALS_ID = 'dockerhub'
+    // }
 
     stages {
 
