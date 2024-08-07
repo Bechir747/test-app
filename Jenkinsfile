@@ -22,9 +22,9 @@ pipeline {
         DOCKER_TAG = 'latest'
     }
 
-  // tools{
-  //   dockerTool 'Docker'
-  // }
+  tools{
+    dockerTool 'Docker'
+  }
     stages {
 
         stage('Run test-app') {
