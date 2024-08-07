@@ -7,6 +7,17 @@ pipeline {
     }
 
     stages {
+
+        stage('Run test-app') {
+            steps {
+                echo 'executing npm ...'
+                nodejs('Node-18.18.1'){
+                    sh 'npm install'
+                }
+            }
+        }
+
+
         stage('Build') {
             steps {
                 echo 'build successfully !'
