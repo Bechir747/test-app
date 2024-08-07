@@ -1,36 +1,51 @@
 pipeline {
     agent any
-    stages {
 
-        stage('Run test-app') {
+    environment {
+        DOCKER_REGISTRY = 'docker.io'
+        DOCKER_IMAGE = 'bechirbo/test-app'
+        DOCKER_TAG = 'latest'
+    }
+
+    stages {
+        stage('Checkout') {
             steps {
-                echo 'executing npm ...!'
-                nodejs('Node-18.18.1'){
-                    sh 'npm install'
+                script {
+                    checkout scm
                 }
             }
         }
-
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("test-app-image")
+                    docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
                 }
             }
         }
 
-       stage('Test') {
+        stage('Run Docker Container') {
             steps {
-                echo 'Test successfully !!'
+                script {
+                    docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").withRun('-p 4201:80') { c ->
+                        sh 'echo "Running Angular application"'
+                    }
+                }
             }
         }
 
-        stage('Deploy in DockerHub') {
+        stage('Clean Up') {
             steps {
-                echo 'Deploy successfully !!'
+                script {
+                    sh 'docker rmi ${DOCKER_IMAGE}:${DOCKER_TAG}'
+                }
             }
         }
     }
 
+    post {
+        always {
+            cleanWs()
+        }
+    }
 }
