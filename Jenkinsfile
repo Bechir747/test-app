@@ -27,14 +27,16 @@ pipeline {
 
     stage('Run Docker Image') {
       steps {
-        sh "docker run -d -p 4300:80 ${DOCKER_IMAGE}:${DOCKER_TAG}" // Run the image in detached mode
+        sh "docker run -d -p 4300:80 ${DOCKER_IMAGE}:${DOCKER_TAG}"
       }
     }
 
     stage('Push to Docker Hub') {
       steps {
-        docker.withRegistry('${DOCKER_REGISTRY}', '${DOCKER_CREDENTIALS}') {
-          docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push()
+        script {
+          docker.withRegistry(credentialsId: DOCKER_CREDENTIALS) {
+            docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push()
+          }
         }
       }
     }
