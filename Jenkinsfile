@@ -7,7 +7,7 @@ pipeline {
     }
 
     stages {
-        stage('Docker Build') {
+        stage('Build') {
             steps {
                 echo 'build successfully !'
             }
