@@ -18,7 +18,7 @@ pipeline {
     // }
 
    environment {
-        DOCKER_IMAGE = 'test-app'
+        DOCKER_IMAGE = 'test-app-image'
         DOCKER_TAG = 'latest'
     }
 
@@ -48,7 +48,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").withRun('-p 4200:80') { c ->
+                    docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").withRun('-p 4201:80') { c ->
                         sh 'echo "Running Angular application"'
                     }
                 }
