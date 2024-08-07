@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker { 
+            image 'docker:latest' // Docker image with Docker installed
+            args '-v /var/run/docker.sock:/var/run/docker.sock' // Mount the Docker socket for Docker-in-Docker
+        }
+    }
 
     // environment {
     //     DOCKER_IMAGE_NAME = 'bechirbo/test-app'
