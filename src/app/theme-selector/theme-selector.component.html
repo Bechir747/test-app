@@ -1,0 +1,12 @@
+<div>
+    <label *ngFor="let theme of themes">
+      <input 
+        type="radio" 
+        name="theme" 
+        (click)="changeTheme(theme)" 
+        [checked]="theme === activeTheme"
+      >
+      {{ theme.toUpperCase() }}
+    </label>
+  </div>
+  

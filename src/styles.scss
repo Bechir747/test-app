@@ -1,1 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+@import './assets/styles/themes';
+
+
+body {
+  background: var(--sb-color-key-15-opaque);
+  color: var(--sb-color-dark);
+}
+
+h1, h2, h3 {
+  color: var(--sb-color-comet);
+}
+
+.card {
+  background-color: var(--sb-color-key-15-opaque);
+}

@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegisterFormComponent } from './register-form/register-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ThemeSelectorComponent } from './theme-selector/theme-selector.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegisterFormComponent
+    RegisterFormComponent,
+    ThemeSelectorComponent
   ],
   imports: [
     BrowserModule,
