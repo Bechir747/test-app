@@ -25,14 +25,44 @@ pipeline {
       }
     }
 
-    stage('Run Docker Image') {
-      steps {
-        script {
-          docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").run('-p 4300:80 --name test-app-container')
+    // stage('Run Docker Image') {
+    //   steps {
+    //     script {
+    //       docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").run('-p 4300:80')
 
+    //     }
+    //   }
+    // }
+
+    stage('Run Docker Image') {
+    steps {
+        script {
+            def port = 4300
+            def portAvailable = true
+
+            // Check if port 4300 is available
+            try {
+                ServerSocket socket = new ServerSocket(port)
+                socket.close()
+            } catch (IOException e) {
+                portAvailable = false
+            }
+
+            if (!portAvailable) {
+                // Find any available port
+                ServerSocket socket = new ServerSocket(0)
+                port = socket.localPort
+                socket.close()
+                echo "Port 4300 is not available. Running on port ${port} instead."
+            } else {
+                echo "Running on port ${port}."
+            }
+
+            docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").run("-p ${port}:80")
         }
-      }
     }
+}
+
 
     stage('Push to Docker Hub') {
       steps {
