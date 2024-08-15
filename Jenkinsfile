@@ -79,7 +79,7 @@ pipeline {
             steps {
                 script {
                     // Deploy to Kubernetes
-                    kubectl.apply("-f k8s/deployment.yaml")
+                    sh "kubectl create -f deployment.yaml"
                 }
             }
         }
