@@ -79,7 +79,7 @@ pipeline {
             steps {
                 script {
                     // Deploy to Kubernetes
-                    sh 'kubectl apply -f deployment.yaml'
+                    sh 'kubectl apply -f deployment.yml'
                 }
             }
         }
