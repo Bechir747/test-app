@@ -73,5 +73,15 @@ pipeline {
         }
       }
     }
+
+
+    stage('Deploy to K8S') {
+            steps {
+                script {
+                    // Deploy to Kubernetes
+                    kubectl.apply("-f k8s/deployment.yaml")
+                }
+            }
+        }
   }
 }
