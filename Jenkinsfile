@@ -77,11 +77,20 @@ pipeline {
 
     stage('Deploying to Kubernetes') {
       steps {
-        script{
-          sh 'kubectl apply -f deployment.yml'
-          sh 'kubectl apply -f service.yml'
+                script {
+                    withCredentials([string(credentialsId: 'secret-k8', variable: 'KUBE_TOKEN')]) {
+                        kubernetesDeploy(
+                            configs: 'deployment.yml, service.yml',
+                            kubeConfig: [
+                                serverUrl: 'https://192.168.59.101:8443',
+                                credentialsId: 'secret-k8',
+                                namespace: 'jenkins'
+                            ],
+                            enableConfigSubstitution: true
+                        )
+                    }
+              }
         }
-      }
     }
   }
 }
