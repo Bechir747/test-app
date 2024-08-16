@@ -1,5 +1,45 @@
 pipeline {
-  agent any
+   agent {
+    kubernetes {
+      yaml '''
+        apiVersion: apps/v1 # Kubernetes API version
+kind: Deployment  # Kubernetes resource kind we are creating
+metadata:
+  name: testapp-deployment
+spec:
+  selector:
+    matchLabels:
+      app: testapp
+  replicas: 3 # Number of replicas that will be created for this deployment
+  template:
+    metadata:
+      labels:
+        app: testapp
+    spec:
+      containers:
+      - name: testapp
+        image: bechirbo/test-app:latest # Image that will be used to containers in the cluster
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80 # The port that the container is running on in the cluster
+---
+
+kind: Service  # Kubernetes API version
+apiVersion: v1 # Kubernetes resource kind we are creating
+metadata:
+  name: testapp-service
+spec:
+  selector:
+    app: testapp
+  ports:
+  - protocol: TCP
+    port: 80   # The port that the service is running on in the cluster
+    targetPort: 80   # The port exposed by the service
+    nodePort: 31000
+  type: NodePort     # type of the service.
+        '''
+    }
+  }
 
   environment {
     DOCKER_REGISTRY = 'docker.io'
