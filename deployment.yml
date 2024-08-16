@@ -15,6 +15,5 @@ spec:
       containers:
       - name: testapp
         image: bechirbo/test-app:latest # Image that will be used to containers in the cluster
-        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80 # The port that the container is running on in the cluster
