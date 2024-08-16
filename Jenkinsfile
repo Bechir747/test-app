@@ -2,40 +2,22 @@ pipeline {
     agent {
         kubernetes {
             yaml '''
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: testapp-deployment
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: testapp
-  template:
-    metadata:
-      labels:
-        app: testapp
-    spec:
-      containers:
-      - name: testapp
-        image: bechirbo/test-app:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 80
----
 apiVersion: v1
-kind: Service
+kind: Pod
 metadata:
-  name: testapp-service
+  labels:
+    some-label: testpipeline
 spec:
-  selector:
-    app: testapp
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 80
-    nodePort: 31000
-  type: NodePort
+  containers:
+  - name: jnlp
+    image: jenkins/inbound-agent:latest
+    imagePullPolicy: IfNotPresent
+    args: ['$(JENKINS_SECRET)', '$(JENKINS_NAME)']
+  - name: docker
+    image: docker:latest
+    command:
+    - cat
+    tty: true
             '''
         }
     }
@@ -106,10 +88,45 @@ spec:
         stage('Deploy to K8S') {
             steps {
                 script {
-                    // Deploy the embedded Kubernetes YAML
-                    sh 'kubectl apply -f - <<EOF\n' + 
-                       "${yaml}\n" + 
-                       'EOF'
+                    // Apply the Kubernetes deployment YAML
+                    sh '''
+cat <<EOF | kubectl apply -f -
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testapp-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: testapp
+  template:
+    metadata:
+      labels:
+        app: testapp
+    spec:
+      containers:
+      - name: testapp
+        image: ${DOCKER_IMAGE}:${DOCKER_TAG}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: testapp-service
+spec:
+  selector:
+    app: testapp
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 31000
+  type: NodePort
+EOF
+                    '''
                 }
             }
         }
